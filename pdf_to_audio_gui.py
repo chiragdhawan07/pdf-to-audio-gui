@@ -43,6 +43,7 @@ def convert_to_audio():
     output_file = output_filename_var.get() or "output.mp3"
 
     status_var.set("🔄 Converting, please wait...")
+    root.update_idletasks()
 
     text = extract_text(pdf_path, start, end)
     if not text.strip():
@@ -62,16 +63,20 @@ def convert_to_audio():
         messagebox.showerror("Error", str(e))
         status_var.set("❌ Conversion failed.")
 
-# File picker
+# File picker with full folder access and PDF filter
 def browse_file():
-    path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+    path = filedialog.askopenfilename(
+        title="Select a PDF file",
+        initialdir=os.path.expanduser("~"),
+        filetypes=[("PDF Files", "*.pdf"), ("All Files", "*.*")]
+    )
     if path:
         file_path_var.set(path)
 
 # ----- GUI SETUP -----
 root = tk.Tk()
-root.title("PDF to Audio Converter")
-root.geometry("500x450")
+root.title("📘 PDF to Audio Converter")
+root.geometry("500x500")
 root.resizable(False, False)
 
 file_path_var = tk.StringVar()
@@ -92,7 +97,7 @@ tk.Entry(frame_range, textvariable=start_page_var, width=5).grid(row=0, column=1
 tk.Label(frame_range, text="End Page:").grid(row=0, column=2)
 tk.Entry(frame_range, textvariable=end_page_var, width=5).grid(row=0, column=3)
 
-tk.Label(root, text="🎙️ Voice:").pack()
+tk.Label(root, text="🎙️ Select Voice:").pack()
 tk.Radiobutton(root, text="Male", variable=voice_var, value=0).pack()
 tk.Radiobutton(root, text="Female", variable=voice_var, value=1).pack()
 
