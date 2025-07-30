@@ -39,7 +39,12 @@ cd pdf-to-audio-gui
 ```bash
 pip install pyttsx3 PyPDF2
 ```
-
+> 💡 Note: tkinter comes pre-installed with most Python distributions.
+If you're using WSL (Windows Subsystem for Linux) or encounter ModuleNotFoundError: No module named 'tkinter', install it using:
+```bash
+sudo apt update && sudo apt install python3-tk -y
+```
+> ✅ Recommended: Run this script directly on Windows (via Command Prompt or PowerShell) for easiest setup.
 ---
 
 ## ▶️ How to Run
