@@ -3,6 +3,7 @@ import pyttsx3
 import os
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from tkinter.filedialog import asksaveasfilename
 
 # Extract text from selected pages
 def extract_text(pdf_path, start, end):
@@ -40,7 +41,12 @@ def convert_to_audio():
     voice_id = voice_var.get()
     rate = rate_slider.get()
     volume = volume_slider.get()
-    output_file = output_filename_var.get() or "output.mp3"
+    output_file = output_filename_var.get()
+
+    if not output_file:
+        messagebox.showerror("Missing Output File", "Please select where to save the MP3 file.")
+        status_var.set("❌ No output file selected.")
+        return
 
     status_var.set("🔄 Converting, please wait...")
     root.update_idletasks()
@@ -73,17 +79,25 @@ def browse_file():
     if path:
         file_path_var.set(path)
 
+# Output file picker
+def choose_output_file():
+    file_path = asksaveasfilename(defaultextension=".mp3",
+                                   filetypes=[("MP3 files", "*.mp3")],
+                                   title="Save audio as...")
+    if file_path:
+        output_filename_var.set(file_path)
+
 # ----- GUI SETUP -----
 root = tk.Tk()
 root.title("📘 PDF to Audio Converter")
-root.geometry("500x500")
+root.geometry("500x540")
 root.resizable(False, False)
 
 file_path_var = tk.StringVar()
 start_page_var = tk.StringVar(value="1")
 end_page_var = tk.StringVar(value="1")
 voice_var = tk.IntVar(value=0)
-output_filename_var = tk.StringVar(value="output.mp3")
+output_filename_var = tk.StringVar()
 status_var = tk.StringVar()
 
 tk.Label(root, text="📄 Select PDF File").pack(pady=5)
@@ -111,8 +125,9 @@ volume_slider = tk.Scale(root, from_=0.0, to=1.0, resolution=0.1, orient="horizo
 volume_slider.set(1.0)
 volume_slider.pack()
 
-tk.Label(root, text="💾 Output Filename (.mp3)").pack(pady=5)
-tk.Entry(root, textvariable=output_filename_var, width=30).pack()
+tk.Label(root, text="💾 Save Audio File As").pack(pady=5)
+tk.Entry(root, textvariable=output_filename_var, width=50).pack()
+tk.Button(root, text="Choose Save Location", command=choose_output_file).pack(pady=3)
 
 tk.Button(root, text="🚀 Convert to Audio", command=convert_to_audio).pack(pady=15)
 
