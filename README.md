@@ -56,9 +56,10 @@ python pdf_to_audio_gui.py
 Then use the GUI to:  
 1. Select a PDF file  
 2. Choose start & end pages  
-3. Set voice, speed, and volume  
-4. Click **"Convert to Audio"**  
-5. Your `.mp3` file will be saved!
+3. Set voice, speed, and volume
+4. Choose output filename and path
+5. Click **"Convert to Audio"**  
+6. Your `.mp3` file will be saved!
 
 ---
 
